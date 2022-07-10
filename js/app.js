@@ -6,9 +6,13 @@ let ctx = canvas.getContext("2d");
 canvas.width = 160;
 canvas.height = 96;
 
-// load tilesheet
+// load background tilesheet
 let bgTileSheet = new Image();
 bgTileSheet.src = "img/bgTileSheet.png";
+
+// load robot tilesheet
+let roboTileSheet = new Image();
+roboTileSheet.src = "img/robo.png";
 
 // create a sprite to move around
 let sprite = {
@@ -33,6 +37,9 @@ function render() {
 
     // draw the test sprite
     ctx.drawImage(bgTileSheet, 24,0, 8,8, sprite.location.x,sprite.location.y, 8,8);
+
+    // draw the robot
+    ctx.drawImage(roboTileSheet, 0,0, 32,32, 0,48, 32,32)
 
     // move the sprite
     sprite.location.x += sprite.velocity.x;
