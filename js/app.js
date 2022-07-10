@@ -2,28 +2,47 @@
 let canvas = document.getElementsByTagName("canvas")[0];
 let ctx = canvas.getContext("2d");
 
-// create virtual lcd screen
-let lcd = document.createElement('canvas');
-lcd.width = 160;
-lcd.height = 96;
-lcdCtx = lcd.getContext("2d");
-
-// set up real canvas
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
+// set up canvas
+canvas.width = 160;
+canvas.height = 96;
 
 // load tilesheet
 let bgTileSheet = new Image();
 bgTileSheet.src = "img/bgTileSheet.png";
 
+// create a sprite to move around
+let sprite = {
+    location: {x:0, y:0},
+    velocity: {x:1, y:1}
+}
+
 function render() {
+
+    // fit canvas to window
+    canvas.style.height = window.innerHeight;
+    canvas.style.width = window.innerWidth;
+
+    // clear the canvas
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // draw to the canvas
     for (let i=0; i<20; i++) {
-        for (let j=0; j<12; j++) {
-            lcdCtx.drawImage(bgTileSheet, 0,0, 8,8, i*8,j*8, 8,8);
-        }
+        ctx.drawImage(bgTileSheet, 8,0, 8,8, i*8,80, 8,8);
+        ctx.drawImage(bgTileSheet, 16,0, 8,8, i*8,88, 8,8);
     }
-    //lcdCtx.drawImage(bgTileSheet,0,0);
-    ctx.drawImage(lcd, 0,0, lcd.width,lcd.height, 0,0, canvas.width,canvas.height );
+
+    // draw the test sprite
+    ctx.drawImage(bgTileSheet, 24,0, 8,8, sprite.location.x,sprite.location.y, 8,8);
+
+    // move the sprite
+    sprite.location.x += sprite.velocity.x;
+    sprite.location.y += sprite.velocity.y;
+
+    // bounce the sprite off of the floor and canvas edges 
+    if (sprite.location.y <=0 || sprite.location.y >= 72) { sprite.velocity.y *= -1; }
+    if (sprite.location.x <=0 || sprite.location.x >= 152) { sprite.velocity.x *= -1; }
+
+    // wait until the next frame
     requestAnimationFrame(render);
 }
 
