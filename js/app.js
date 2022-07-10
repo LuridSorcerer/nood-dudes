@@ -6,6 +6,9 @@ let ctx = canvas.getContext("2d");
 canvas.width = 160;
 canvas.height = 96;
 
+// initialize controls
+controls.init();
+
 // load background tilesheet
 let bgTileSheet = new Image();
 bgTileSheet.src = "img/bgTileSheet.png";
@@ -21,6 +24,9 @@ let sprite = {
 }
 
 function render() {
+
+    // read controls
+    controls.read();
 
     // fit canvas to window
     canvas.style.height = window.innerHeight;
