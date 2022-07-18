@@ -9,7 +9,7 @@ let camera = {
 
 // create a sprite to move around
 let sprite = {
-    location: {x:0, y:0},
+    location: {x:0, y:0, w:8, h:8},
     prev_location: {x:0, y:0},
     velocity: {x:0.5, y:0.5},
     sprite_sheet: bgTileSheet,
@@ -18,11 +18,12 @@ let sprite = {
 
 // create a player object
 let player = {
-    location: {x:0, y:0},
+    location: {x:0, y:0, w:16, h:32},
     prev_location: {x:0, y:0},
     velocity: {x:0, y:0},
     sprite_sheet: roboTileSheet,
-    sprite_clip: {x:0, y:0, w:32, h:32}
+    sprite_clip: {x:0, y:0, w:32, h:32},
+    sprite_offset: {x:-8, y:0}
 }
 
 let ground = [];
@@ -42,10 +43,16 @@ function init() {
     roboTileSheet.src = "img/robo.png";
 
     // load ground tiles
-    for (let i = 0; i < 10; i++) {
-        let tile = {x:i*8,y:camera.view.h-16,w:8,h:8}
+    for (let i = 0; i < 18; i++) {
+        let tile = { 
+            location: { x:i*8, y:camera.view.h-16, w:8, h:8},
+            sprite_sheet: bgTileSheet,
+            sprite_clip: { x:8, y:0, w:8, h:8 }
+        };
         ground.push(tile);
     }
+    ground.push( { location: {x:0, y:32, w:8, h:8}, sprite_sheet:bgTileSheet, sprite_clip: {x:8, y:0, w:8, h:8} } );
+    ground.push( { location: {x:64, y:64, w:8, h:8}, sprite_sheet:bgTileSheet, sprite_clip: {x:8, y:0, w:8, h:8} } );
 
 }
 
@@ -61,17 +68,32 @@ function update() {
     // read controls
     controls.read();
 
-    if (player.location.y > camera.view.h - player.sprite_clip.h - 16) {
-        player.location.y = camera.view.h - player.sprite_clip.h - 16;
-        player.velocity.y = -7;
-    }
-
     // move the player
     physics.apply_gravity(player);
     physics.move(player);
 
     // move the sprite
     physics.move(sprite);
+
+    // check and handle collisions
+    for (let i=0; i<ground.length; i++) {
+        if ( physics.check_collision(player,ground[i]) ) {
+            physics.eject(player,ground[i]);
+        }
+    }
+
+    // debug: basic platform controlswwww
+    if (controls.D_Up === 1) {
+        player.velocity.y = -7;
+    }
+    if (controls.D_Left != 0) {
+        player.velocity.x = -2;
+    } else 
+    if (controls.D_Right != 0) {
+        player.velocity.x = +2
+    } else {
+        player.velocity.x= 0;
+    }
 
     // bounce the sprite off of the floor and canvas edges 
     if (sprite.location.y <=0 || sprite.location.y >= 72) { sprite.velocity.y *= -1; }
@@ -91,18 +113,16 @@ function render() {
 
     // draw the ground tiles
     for (let i = 0; i < ground.length; i++) {
-        lcd.draw_sprite( 
-            {
-                sprite_sheet:bgTileSheet, 
-                sprite_clip:{x:8,y:0,w:8,h:8}, 
-                location:{x:ground[i].x, y:ground[i].y} 
-            }, camera )
+        //lcd.draw_hitbox(ground[i]);
+        lcd.draw_sprite(ground[i], camera )
     }
 
     // draw the test sprite
+    //lcd.draw_hitbox(sprite);
     lcd.draw_sprite(sprite, camera);
 
     // draw the robot
+    if (physics.check_collision(player,sprite)) lcd.draw_hitbox(player);
     lcd.draw_sprite(player, camera);
 
     // wait until the next frame
