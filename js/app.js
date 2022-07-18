@@ -5,24 +5,32 @@ let ctx;
 let bgTileSheet = new Image();
 let roboTileSheet = new Image();
 
+let camera = {
+    location: {x:0, y:0}
+}
+
 // create a sprite to move around
 let sprite = {
     location: {x:0, y:0},
     prev_location: {x:0, y:0},
-    velocity: {x:1, y:1}
+    velocity: {x:1, y:1},
+    sprite_sheet: bgTileSheet,
+    sprite_clip: {x:24, y:0, w:8, h:8}
+}
+
+// create a player object
+let player = {
+    location: {x:0, y:0},
+    prev_location: {x:0, y:0},
+    velocity: {x:1, y:1},
+    sprite_sheet: roboTileSheet,
+    sprite_clip: {x:0, y:0, w:32, h:32}
 }
 
 function init() {
 
-    // get real canvas
-    canvas = document.getElementsByTagName("canvas")[0];
-    ctx = canvas.getContext("2d");
-
-    // set up canvas
-    canvas.width = 160;
-    canvas.height = 96;
-
-    document.getElementsByTagName("body")[0].style.backgroundColor = "808080";
+    // initialize display
+    lcd.init();
 
     // initialize controls
     controls.init();
@@ -37,32 +45,32 @@ function init() {
 
 function render() {
 
-    // read controls
+    // TODO: update() - read controls
     controls.read();
+
+    // clear canvas
+    lcd.clear();
 
     // fit canvas to window
     canvas.style.height = window.innerHeight;
     canvas.style.width = window.innerWidth;
 
-    // clear the canvas
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    // draw to the canvas
+    // TODO: replace with array of background objects - draw to the canvas
     for (let i=0; i<20; i++) {
         ctx.drawImage(bgTileSheet, 8,0, 8,8, i*8,80, 8,8);
         ctx.drawImage(bgTileSheet, 16,0, 8,8, i*8,88, 8,8);
     }
 
     // draw the test sprite
-    ctx.drawImage(bgTileSheet, 24,0, 8,8, sprite.location.x,sprite.location.y, 8,8);
+    lcd.draw_sprite(sprite, camera);
 
     // draw the robot
-    ctx.drawImage(roboTileSheet, 0,0, 32,32, 0,48, 32,32)
-
-    // move the sprite
+    lcd.draw_sprite(player, camera);
+    
+    // TODO: update() - move the sprite
     move(sprite);
 
-    // bounce the sprite off of the floor and canvas edges 
+    // TODO: update() - bounce the sprite off of the floor and canvas edges 
     if (sprite.location.y <=0 || sprite.location.y >= 72) { sprite.velocity.y *= -1; }
     if (sprite.location.x <=0 || sprite.location.x >= 152) { sprite.velocity.x *= -1; }
 
