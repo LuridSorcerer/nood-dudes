@@ -25,6 +25,8 @@ let player = {
     sprite_clip: {x:0, y:0, w:32, h:32}
 }
 
+let ground = [];
+
 function init() {
 
     // initialize display
@@ -38,6 +40,12 @@ function init() {
 
     // load robot tilesheet
     roboTileSheet.src = "img/robo.png";
+
+    // load ground tiles
+    for (let i = 0; i < 10; i++) {
+        let tile = {x:i*8,y:camera.view.h-16,w:8,h:8}
+        ground.push(tile);
+    }
 
 }
 
@@ -81,10 +89,14 @@ function render() {
     canvas.style.height = window.innerHeight;
     canvas.style.width = window.innerWidth;
 
-    // TODO: replace with array of background objects - draw to the canvas
-    for (let i=0; i<20; i++) {
-        ctx.drawImage(bgTileSheet, 8,0, 8,8, i*8,80, 8,8);
-        ctx.drawImage(bgTileSheet, 16,0, 8,8, i*8,88, 8,8);
+    // draw the ground tiles
+    for (let i = 0; i < ground.length; i++) {
+        lcd.draw_sprite( 
+            {
+                sprite_sheet:bgTileSheet, 
+                sprite_clip:{x:8,y:0,w:8,h:8}, 
+                location:{x:ground[i].x, y:ground[i].y} 
+            }, camera )
     }
 
     // draw the test sprite
