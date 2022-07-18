@@ -1,5 +1,9 @@
 let physics = {
 
+    // physics constants
+    terminal_velocity: 4,
+    gravity_strength: 1,
+
     // move() : Apply current velocity to a character's position
     move(character) {
         // save the previous position
@@ -12,7 +16,15 @@ let physics = {
     },
 
     apply_gravity(character) {
-        // stub
+        // apply downward velocity
+        if (character.velocity.y < this.terminal_velocity) {
+            character.velocity.y += this.gravity_strength;
+        }
+
+        // restrict falling speed to terminal velocity
+        if (character.velocity.y >= this.terminal_velocity) {
+            character.velocity.y = this.terminal_velocity;
+        }
     }, 
 
     check_collision(character,sprite) {

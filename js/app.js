@@ -53,21 +53,13 @@ function update() {
     // read controls
     controls.read();
 
-    // check if character needs to be moved up/down
-    if (controls.D_Down > 0 && controls.D_Up === 0) { 
-        player.velocity.y = 1; 
-    } else if (controls.D_Up > 0 && controls.D_Down === 0 ) {
-        player.velocity.y = -1;
-    } else { player.velocity.y = 0; }
-
-    // check if character needs to be moved left/right
-    if (controls.D_Right > 0 && controls.D_Left === 0) { 
-        player.velocity.x = 1; 
-    } else if (controls.D_Left > 0 && controls.D_Right === 0 ) {
-        player.velocity.x = -1;
-    } else { player.velocity.x = 0; }
+    if (player.location.y > camera.view.h - player.sprite_clip.h - 16) {
+        player.location.y = camera.view.h - player.sprite_clip.h - 16;
+        player.velocity.y = -10;
+    }
 
     // move the player
+    physics.apply_gravity(player);
     physics.move(player);
 
     // move the sprite
