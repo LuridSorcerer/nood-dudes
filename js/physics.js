@@ -1,11 +1,16 @@
 let physics = {
 
     // physics constants
-    terminal_velocity: 4,
+    terminal_velocity: 3,
     gravity_strength: 0.5,
+    friction_strength: 0.2,
 
     // move() : Apply current velocity to a character's position
     move(character) {
+
+        if (character.velocity.x > this.terminal_velocity) { character.velocity.x = this.terminal_velocity;}
+        if (character.velocity.x < -1*this.terminal_velocity) { character.velocity.x = -1*this.terminal_velocity;}
+
         // save the previous position
         character.prev_location.x = character.location.x;
         character.prev_location.y = character.location.y;
@@ -26,6 +31,16 @@ let physics = {
             character.velocity.y = this.terminal_velocity;
         }
     }, 
+
+    apply_friction(character) {
+        if (character.velocity.x > this.friction_strength) {
+            character.velocity.x -= this.friction_strength;
+        } else if (character.velocity.x < -1*this.friction_strength) {
+            character.velocity.x += this.friction_strength;
+        } else {
+            character.velocity.x = 0;
+        }
+    },
 
     check_collision(character,sprite) {
 
@@ -48,7 +63,7 @@ let physics = {
         if (character.prev_location.y + character.location.h <= sprite.location.y) {
             character.location.y = sprite.location.y - character.location.h;
             character.velocity.y = 0;
-            //console.log("top")
+            character.on_ground = true;
         } else 
         // check for collision from left
         if (character.prev_location.x + character.location.w <= sprite.location.x) {

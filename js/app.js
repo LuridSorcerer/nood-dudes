@@ -34,7 +34,8 @@ let player = {
     sprite_sheet: roboTileSheet,
     sprite_clip: {x:0, y:0, w:32, h:32},
     sprite_offset: {x:-8, y:0},
-    facing_left: false
+    facing_left: false,
+    on_ground: false
 }
 
 let ground = [];
@@ -74,6 +75,7 @@ function init() {
 
     // set player starting position
     player.location = {x:0, y:0, w:16, h:32};
+    player.velocity = {x:0, y:0}
 
     // set title screen starting location
     titleScreen.location = {x:0, y:0, w:160, h:96}
@@ -106,13 +108,17 @@ function update() {
     if (state === 1) {
 
         // move the player
-        physics.apply_gravity(player);
         physics.move(player);
+        physics.apply_gravity(player);
+        if(player.on_ground) {
+            physics.apply_friction(player);
+        }
 
         // move the sprite
         physics.move(sprite);
 
         // check and handle collisions
+        player.on_ground = false;
         for (let i=0; i<ground.length; i++) {
             if ( physics.check_collision(player,ground[i]) ) {
                 physics.eject(player,ground[i]);
@@ -120,20 +126,20 @@ function update() {
         }
 
         // debug: basic platform controls
-        if (controls.D_Up === 1) {
+        if (controls.D_Up === 1 && player.on_ground) {
             player.velocity.y = -7;
         }
         if (controls.D_Left != 0) {
-            player.velocity.x = -2;
+            player.velocity.x -= 0.3;
             player.facing_left = true;
             player.sprite_clip = {x:0, y:32, w:32, h:32};
         } else 
         if (controls.D_Right != 0) {
-            player.velocity.x = +2
+            player.velocity.x += 0.3;
             player.facing_left = false;
             player.sprite_clip = {x:0, y:0, w:32, h:32};
         } else {
-            player.velocity.x= 0;
+            //player.velocity.x= 0;
         }
 
         // bounce the sprite off of the floor and canvas edges 
@@ -175,7 +181,7 @@ function render() {
         lcd.draw_sprite(sprite, camera);
 
         // draw the robot
-        //if (physics.check_collision(player,sprite)) lcd.draw_hitbox(player);
+        if (player.on_ground) lcd.draw_hitbox(player);
         lcd.draw_sprite(player, camera);
     }
 
