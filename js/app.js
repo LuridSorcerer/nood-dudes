@@ -1,26 +1,38 @@
-// get real canvas
-let canvas = document.getElementsByTagName("canvas")[0];
-let ctx = canvas.getContext("2d");
+// set up some global variables
+let canvas;
+let ctx;
 
-// set up canvas
-canvas.width = 160;
-canvas.height = 96;
-
-// initialize controls
-controls.init();
-
-// load background tilesheet
 let bgTileSheet = new Image();
-bgTileSheet.src = "img/bgTileSheet.png";
-
-// load robot tilesheet
 let roboTileSheet = new Image();
-roboTileSheet.src = "img/robo.png";
 
 // create a sprite to move around
 let sprite = {
     location: {x:0, y:0},
+    prev_location: {x:0, y:0},
     velocity: {x:1, y:1}
+}
+
+function init() {
+
+    // get real canvas
+    canvas = document.getElementsByTagName("canvas")[0];
+    ctx = canvas.getContext("2d");
+
+    // set up canvas
+    canvas.width = 160;
+    canvas.height = 96;
+
+    document.getElementsByTagName("body")[0].style.backgroundColor = "808080";
+
+    // initialize controls
+    controls.init();
+
+    // load background tilesheet
+    bgTileSheet.src = "img/bgTileSheet.png";
+
+    // load robot tilesheet
+    roboTileSheet.src = "img/robo.png";
+
 }
 
 function render() {
@@ -48,8 +60,9 @@ function render() {
     ctx.drawImage(roboTileSheet, 0,0, 32,32, 0,48, 32,32)
 
     // move the sprite
-    sprite.location.x += sprite.velocity.x;
-    sprite.location.y += sprite.velocity.y;
+    //sprite.location.x += sprite.velocity.x;
+    //sprite.location.y += sprite.velocity.y;
+    move(sprite);
 
     // bounce the sprite off of the floor and canvas edges 
     if (sprite.location.y <=0 || sprite.location.y >= 72) { sprite.velocity.y *= -1; }
@@ -59,4 +72,5 @@ function render() {
     requestAnimationFrame(render);
 }
 
+init();
 render();
