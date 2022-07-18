@@ -23,7 +23,8 @@ let player = {
     velocity: {x:0, y:0},
     sprite_sheet: roboTileSheet,
     sprite_clip: {x:0, y:0, w:32, h:32},
-    sprite_offset: {x:-8, y:0}
+    sprite_offset: {x:-8, y:0},
+    facing_left: false
 }
 
 let ground = [];
@@ -82,15 +83,19 @@ function update() {
         }
     }
 
-    // debug: basic platform controlswwww
+    // debug: basic platform controls
     if (controls.D_Up === 1) {
         player.velocity.y = -7;
     }
     if (controls.D_Left != 0) {
         player.velocity.x = -2;
+        player.facing_left = true;
+        player.sprite_clip = {x:0, y:32, w:32, h:32};
     } else 
     if (controls.D_Right != 0) {
         player.velocity.x = +2
+        player.facing_left = false;
+        player.sprite_clip = {x:0, y:0, w:32, h:32};
     } else {
         player.velocity.x= 0;
     }
@@ -113,12 +118,10 @@ function render() {
 
     // draw the ground tiles
     for (let i = 0; i < ground.length; i++) {
-        //lcd.draw_hitbox(ground[i]);
         lcd.draw_sprite(ground[i], camera )
     }
 
     // draw the test sprite
-    //lcd.draw_hitbox(sprite);
     lcd.draw_sprite(sprite, camera);
 
     // draw the robot
