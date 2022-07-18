@@ -60,8 +60,6 @@ function render() {
     ctx.drawImage(roboTileSheet, 0,0, 32,32, 0,48, 32,32)
 
     // move the sprite
-    //sprite.location.x += sprite.velocity.x;
-    //sprite.location.y += sprite.velocity.y;
     move(sprite);
 
     // bounce the sprite off of the floor and canvas edges 
