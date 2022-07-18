@@ -2,7 +2,7 @@ let physics = {
 
     // physics constants
     terminal_velocity: 4,
-    gravity_strength: 1,
+    gravity_strength: 0.5,
 
     // move() : Apply current velocity to a character's position
     move(character) {

@@ -55,7 +55,7 @@ function update() {
 
     if (player.location.y > camera.view.h - player.sprite_clip.h - 16) {
         player.location.y = camera.view.h - player.sprite_clip.h - 16;
-        player.velocity.y = -10;
+        player.velocity.y = -7;
     }
 
     // move the player
