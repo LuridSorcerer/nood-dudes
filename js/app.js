@@ -22,7 +22,7 @@ let sprite = {
 let player = {
     location: {x:0, y:0},
     prev_location: {x:0, y:0},
-    velocity: {x:1, y:1},
+    velocity: {x:0, y:0},
     sprite_sheet: roboTileSheet,
     sprite_clip: {x:0, y:0, w:32, h:32}
 }
@@ -43,10 +43,46 @@ function init() {
 
 }
 
-function render() {
+// loop() : game loop, update game state then render to screen
+function loop() {
+    update();
+    render();
+}
 
-    // TODO: update() - read controls
+// update() : update game state (read controls and react, etc.)
+function update() {
+
+    // read controls
     controls.read();
+
+    // check if character needs to be moved up/down
+    if (controls.D_Down > 0 && controls.D_Up === 0) { 
+        player.velocity.y = 1; 
+    } else if (controls.D_Up > 0 && controls.D_Down === 0 ) {
+        player.velocity.y = -1;
+    } else { player.velocity.y = 0; }
+
+    // check if character needs to be moved left/right
+    if (controls.D_Right > 0 && controls.D_Left === 0) { 
+        player.velocity.x = 1; 
+    } else if (controls.D_Left > 0 && controls.D_Right === 0 ) {
+        player.velocity.x = -1;
+    } else { player.velocity.x = 0; }
+
+    // move the player
+    move(player);
+
+    // move the sprite
+    move(sprite);
+
+    // bounce the sprite off of the floor and canvas edges 
+    if (sprite.location.y <=0 || sprite.location.y >= 72) { sprite.velocity.y *= -1; }
+    if (sprite.location.x <=0 || sprite.location.x >= 152) { sprite.velocity.x *= -1; }
+
+}
+
+// render() : draw the game to the screen
+function render() {
 
     // clear canvas
     lcd.clear();
@@ -66,17 +102,10 @@ function render() {
 
     // draw the robot
     lcd.draw_sprite(player, camera);
-    
-    // TODO: update() - move the sprite
-    move(sprite);
-
-    // TODO: update() - bounce the sprite off of the floor and canvas edges 
-    if (sprite.location.y <=0 || sprite.location.y >= 72) { sprite.velocity.y *= -1; }
-    if (sprite.location.x <=0 || sprite.location.x >= 152) { sprite.velocity.x *= -1; }
 
     // wait until the next frame
-    requestAnimationFrame(render);
+    requestAnimationFrame(loop);
 }
 
 init();
-render();
+loop();
