@@ -33,8 +33,8 @@ let lcd = {
             character.sprite_clip.h,
 
             //destination clip
-            character.location.x-camera.location.x, 
-            character.location.y-camera.location.y,
+            Math.floor(character.location.x-camera.view.x), 
+            Math.floor(character.location.y-camera.view.y),
             character.sprite_clip.w,
             character.sprite_clip.h);
     }

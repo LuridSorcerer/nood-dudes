@@ -1,19 +1,17 @@
 // set up some global variables
-let canvas;
-let ctx;
-
 let bgTileSheet = new Image();
 let roboTileSheet = new Image();
 
+// create a moveable virtual camera for screen scrolling
 let camera = {
-    location: {x:0, y:0}
+    view: {x:0, y:0, w:160, h:96}
 }
 
 // create a sprite to move around
 let sprite = {
     location: {x:0, y:0},
     prev_location: {x:0, y:0},
-    velocity: {x:1, y:1},
+    velocity: {x:0.5, y:0.5},
     sprite_sheet: bgTileSheet,
     sprite_clip: {x:24, y:0, w:8, h:8}
 }
@@ -70,10 +68,10 @@ function update() {
     } else { player.velocity.x = 0; }
 
     // move the player
-    move(player);
+    physics.move(player);
 
     // move the sprite
-    move(sprite);
+    physics.move(sprite);
 
     // bounce the sprite off of the floor and canvas edges 
     if (sprite.location.y <=0 || sprite.location.y >= 72) { sprite.velocity.y *= -1; }
