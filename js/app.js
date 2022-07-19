@@ -3,6 +3,8 @@ let bgTileSheet = new Image();
 let roboTileSheet = new Image();
 let titleSheet = new Image();
 
+let frames = 0;
+
 // create a moveable virtual camera for screen scrolling
 let camera = {
     view: {x:0, y:0, w:160, h:96}
@@ -153,6 +155,9 @@ function update() {
         }
 
     }
+
+    // update frame count
+    frames++;
 
 }
 

@@ -59,6 +59,7 @@ let lcd = {
         // set background based on the array above
         if (!isNaN(index)) {
             document.getElementsByTagName("body")[0].style.backgroundImage = "url("+this.bg[index]+")";
+            document.getElementsByTagName("body")[0].style.backgroundSize = "100% 100%";
             return;
         }
 
