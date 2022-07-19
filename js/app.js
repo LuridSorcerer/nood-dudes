@@ -78,7 +78,7 @@ function init() {
     player.velocity = {x:0, y:0}
 
     // set title screen starting location
-    titleScreen.location = {x:0, y:0, w:160, h:96}
+    titleScreen.location = {x:0, y:-80, w:160, h:96}
 
     // set game state to title screen
     state = 0;
@@ -99,6 +99,7 @@ function update() {
 
     // title screen
     if (state === 0) {
+        if (titleScreen.location.y < 0) {titleScreen.location.y += 0.5;}
         if (controls.D_Down != 0) {
             state = 1;
         }
@@ -126,8 +127,8 @@ function update() {
         }
 
         // debug: basic platform controls
-        if (controls.D_Up === 1 && player.on_ground) {
-            player.velocity.y = -7;
+        if (controls.Btn_2 === 1 && player.on_ground) {
+            player.velocity.y = -6;
         }
         if (controls.D_Left != 0) {
             player.velocity.x -= 0.3;
@@ -181,7 +182,7 @@ function render() {
         lcd.draw_sprite(sprite, camera);
 
         // draw the robot
-        if (player.on_ground) lcd.draw_hitbox(player);
+        // if (player.on_ground) lcd.draw_hitbox(player);
         lcd.draw_sprite(player, camera);
     }
 

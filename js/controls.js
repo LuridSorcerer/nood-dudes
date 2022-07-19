@@ -9,6 +9,9 @@ let controls = {
     D_Down: 0,
     D_Left: 0,
     D_Right: 0,
+    Btn_1: 0,
+    Btn_2: 0,
+    Btn_Menu: 0,
 
     // boolean to turn on or off the controls
     Enabled: false,
@@ -17,7 +20,7 @@ let controls = {
     init() {
         this.Enabled = true;
         window.onkeyup = function(e) { controls._pressed[e.keyCode] = false; }
-        window.onkeydown = function(e) { controls._pressed[e.keyCode] = true; }    
+        window.onkeydown = function(e) { controls._pressed[e.keyCode] = true; /* console.log(e.keyCode); */ }
     },
 
     // read: check if each button is pressed. Increment length it's been
@@ -52,6 +55,20 @@ let controls = {
                 this.D_Left++;
             } else {
                 this.D_Left = 0;
+            }
+
+            // check for jump (Spacebar)
+            if (this._pressed[32]) {
+                this.Btn_2++;
+            } else {
+                this.Btn_2 = 0;
+            }
+
+            // check for menu (Esc)
+            if (this._pressed[27]) {
+                this.Btn_Menu++;
+            } else {
+                this.Btn_Menu = 0;
             }
 
         } else {
