@@ -1,15 +1,16 @@
 let physics = {
 
     // physics constants
-    terminal_velocity: 3,
+    max_speed: 1,
+    terminal_velocity: 2,
     gravity_strength: 0.5,
-    friction_strength: 0.2,
+    friction_strength: 0.05,
 
     // move() : Apply current velocity to a character's position
     move(character) {
 
-        if (character.velocity.x > this.terminal_velocity) { character.velocity.x = this.terminal_velocity;}
-        if (character.velocity.x < -1*this.terminal_velocity) { character.velocity.x = -1*this.terminal_velocity;}
+        if (character.velocity.x > this.max_speed) { character.velocity.x = this.max_speed;}
+        if (character.velocity.x < -1*this.max_speed) { character.velocity.x = -1*this.max_speed;}
 
         // save the previous position
         character.prev_location.x = character.location.x;

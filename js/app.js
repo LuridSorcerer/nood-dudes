@@ -129,16 +129,17 @@ function update() {
         }
 
         // debug: basic platform controls
+        let acceleration = 0.1;
         if (controls.Btn_2 === 1 && player.on_ground) {
-            player.velocity.y = -6;
+            player.velocity.y = -5;
         }
         if (controls.D_Left != 0) {
-            player.velocity.x -= 0.3;
+            player.velocity.x -= acceleration;
             player.facing_left = true;
             player.sprite_clip = {x:0, y:32, w:32, h:32};
         } else 
         if (controls.D_Right != 0) {
-            player.velocity.x += 0.3;
+            player.velocity.x += acceleration;
             player.facing_left = false;
             player.sprite_clip = {x:0, y:0, w:32, h:32};
         } else {
