@@ -108,8 +108,8 @@ function update() {
     if (state === 1) {
 
         // move the player
-        physics.move(player);
         physics.apply_gravity(player);
+        physics.move(player);
         if(player.on_ground) {
             physics.apply_friction(player);
         }
