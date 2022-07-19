@@ -44,6 +44,8 @@ let ground = [];
 
 let state = 0;
 
+let jump_sound = new Audio('audio/se/jump.ogg');
+
 // initialize game for the first time, or reset on game over
 function init() {
 
@@ -132,6 +134,8 @@ function update() {
         let acceleration = 0.1;
         if (controls.Btn_2 === 1 && player.on_ground) {
             player.velocity.y = -5;
+            jump_sound.load();
+            jump_sound.play();
         }
         if (controls.D_Left != 0) {
             player.velocity.x -= acceleration;
