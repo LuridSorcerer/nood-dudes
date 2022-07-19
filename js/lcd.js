@@ -2,6 +2,8 @@ let lcd = {
     canvas: null,
     ctx: null,
 
+    bg: [0,"img/bg/00_test_bg.png"],
+
     init() {
         // get real canvas
         canvas = document.getElementsByTagName("canvas")[0];
@@ -51,5 +53,16 @@ let lcd = {
             character.location.w,
             character.location.h
         );
+    },
+
+    set_bg_img(index) {
+        // set background based on the array above
+        if (!isNaN(index)) {
+            document.getElementsByTagName("body")[0].style.backgroundImage = "url("+this.bg[index]+")";
+            return;
+        }
+
+        // if zero or not in array, set background color
+        document.getElementsByTagName("body")[0].style.backgroundColor = "808080";        
     }
 }
