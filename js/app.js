@@ -44,6 +44,8 @@ let ground = [];
 
 let state = 0;
 
+let test_song = new Audio('audio/bgm/test_song.ogg');
+test_song.loop = true;
 let jump_sound = new Audio('audio/se/jump.ogg');
 
 // initialize game for the first time, or reset on game over
@@ -103,14 +105,22 @@ function update() {
 
     // title screen
     if (state === 0) {
+
+        test_song.pause();
+        lcd.set_bg_img(0);
+
         if (titleScreen.location.y < 0) {titleScreen.location.y += 0.5;}
         if (controls.D_Down != 0) {
             state = 1;
         }
+
     }
 
     // game running
     if (state === 1) {
+
+        test_song.play();
+        lcd.set_bg_img(1);
 
         // move the player
         physics.apply_gravity(player);
