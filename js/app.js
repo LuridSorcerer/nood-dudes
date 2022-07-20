@@ -150,14 +150,23 @@ function update() {
         if (controls.D_Left != 0) {
             player.velocity.x -= acceleration;
             player.facing_left = true;
-            player.sprite_clip = {x:0, y:32, w:32, h:32};
+            if ( Math.floor(player.location.x / 4) % 2 == 0 )
+                player.sprite_clip = {x:0, y:32, w:32, h:32};
+            else 
+                player.sprite_clip = {x:32, y:32, w:32, h:32};
         } else 
         if (controls.D_Right != 0) {
             player.velocity.x += acceleration;
             player.facing_left = false;
-            player.sprite_clip = {x:0, y:0, w:32, h:32};
+            if ( Math.floor(player.location.x / 4) % 2 == 0 )
+                player.sprite_clip = {x:0, y:0, w:32, h:32};
+            else 
+                player.sprite_clip = {x:32, y:0, w:32, h:32};
         } else {
-            //player.velocity.x= 0;
+            if (player.facing_left)
+                player.sprite_clip = {x:0, y:32, w:32, h:32};
+            else 
+               player.sprite_clip = {x:0, y:0, w:32, h:32};   
         }
 
         // bounce the sprite off of the floor and canvas edges 
