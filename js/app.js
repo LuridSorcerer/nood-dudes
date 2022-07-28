@@ -144,7 +144,7 @@ function update() {
         let acceleration = 0.1;
         if (controls.Btn_2 === 1 && player.on_ground) {
             player.velocity.y = -5;
-            jump_sound.load();
+            jump_sound.currentTime = 0;
             jump_sound.play();
         }
         if (controls.D_Left != 0) {
